@@ -1,12 +1,17 @@
 package com.hai.yun.kt
 
 
+import com.hai.yun.kt.model.*
+import com.hai.yun.kt.utils.printOxString
 import com.hai.yun.kt.utils.toDateTime
 import com.hai.yun.kt.utils.toOxArray
+import com.hai.yun.kt.utils.toUbyteArray
+import org.joda.time.DateTime
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import java.util.*
 
 
 class GpsSessionManagerTest {
@@ -38,11 +43,26 @@ class GpsSessionManagerTest {
 
         val result = session.getResponseMsg(1, bytes2)
         val toDateTime = result.pContent?.toDateTime()
+        println(toDateTime?.toUbyteArray()?.forEach {
+            println(it)
+        })
         println(toDateTime?.toString("yyyy-MM-dd hh:mm:ss"))
-        println(bytes2.toOxArray())
-        println(result.toString())
-
-        println(result.pContent?.toOxArray())
-        println(result.pStopBit.toOxArray())
     }
+
+    @Test
+    fun getGpsInfoPkg(){
+        val gpsPkg = GpsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            len = 12,
+            satelliteNumber = 12,
+            point = EarthPoint(Latitude(22, 32.7658), Longitude(22, 32.7658)),
+            speed = 255,
+            gpsStateDir = GpsStateDir(332, 1, 0, 1, 0)
+        )
+
+        val gpsInfoPkg = session.getGpsInfoPkg(gpsPkg, 1u)
+       gpsInfoPkg.printOxString()
+    }
+
+
 }

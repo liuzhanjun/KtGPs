@@ -107,6 +107,13 @@ fun UByteArray.toOxArray(): MutableList<String> {
     return result.toMutableList()
 }
 
+fun UByteArray.printOxString() {
+    toOxArray().forEach {
+        print("$it|")
+    }
+    println()
+}
+
 /**
  *
  * 将2位UbyteArray 转成uShort
