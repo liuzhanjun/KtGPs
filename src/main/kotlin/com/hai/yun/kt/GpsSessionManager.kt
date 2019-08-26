@@ -8,6 +8,7 @@ import com.hai.yun.kt.control.getGPSInfoContent
 import com.hai.yun.kt.control.getPkgInfo
 import com.hai.yun.kt.model.DataPkg
 import com.hai.yun.kt.model.GpsPkg
+import com.hai.yun.kt.model.HeartBeatPkg
 import com.hai.yun.kt.model.LbsPkg
 import com.hai.yun.kt.utils.*
 import java.lang.IndexOutOfBoundsException
@@ -38,13 +39,13 @@ enum class GpsSessionManager {
 
     /**
      *
-     * 解析接收的服务器响应
+     * 解析后台响应
      * @author liuzhanjun
      * @date 2019/8/24 17:13
      * @param [p_len_bit, data] 长度位宽，接收到的数据
      * @return
      */
-    fun getResponseMsg(p_len_bit: Int, data: UByteArray): DataPkg {
+    fun analysisMsg(p_len_bit: Int, data: UByteArray): DataPkg {
         if (p_len_bit > 2 || p_len_bit < 1) {
             throw IndexOutOfBoundsException()
         }
@@ -89,6 +90,20 @@ enum class GpsSessionManager {
     fun getGpsAndLbsPkg(gps: GpsPkg, lbs: LbsPkg, no_: UShort): UByteArray {
         return getPkgInfo(AgreeMentNos.GPSAndLBSInfo, gps.getGpsAndLbsContent(lbs), no_)
     }
+
+    /**
+     *
+     * 心跳包
+     * @author liuzhanjun
+     * @date 2019/8/26 14:48
+     * @param [beat, no_]
+     * @return
+     */
+    fun getHeartBeatPkg(beat: HeartBeatPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.heartbeat, beat.getContent(), no_)
+    }
+
+
 
 
 }

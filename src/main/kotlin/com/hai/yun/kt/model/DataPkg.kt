@@ -14,15 +14,4 @@ data class DataPkg(
     var pInfoNo: UShort,//信息序列号
     var pCheckBit: UShort,//校验位
     var pStopBit: UShort = 0x0D_0Au//停止位
-) {
-    override fun toString(): String {
-        return "DataPkg(" +
-                "\n pStartBit=${pStartBit.toOxArray()}," +
-                "\n pLength=${pLength.toOxArray()}," +
-                "\n pAgreement=${pAgreement.toOx()}," +
-                "\n pContent=${pContent?.toOxArray()}, " +
-                "\n pInfoNo=${pInfoNo.toOxArray()}," +
-                "\n pCheckBit=${pCheckBit.toOxArray()}," +
-                "\n pStopBit=${pStopBit.toOxArray()})"
-    }
-}
+)

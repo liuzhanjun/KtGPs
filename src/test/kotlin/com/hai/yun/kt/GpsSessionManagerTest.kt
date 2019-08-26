@@ -1,6 +1,7 @@
 package com.hai.yun.kt
 
 
+import com.hai.yun.kt.control.getContent
 import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
 import org.joda.time.DateTime
@@ -13,6 +14,8 @@ import java.util.*
 
 class GpsSessionManagerTest {
     val session = GpsSessionManager.session.getInstence()
+
+    //登录包
     @Test
     fun getLoginMsg() {
         val string: String = "123456789012345"
@@ -20,6 +23,7 @@ class GpsSessionManagerTest {
         println("array" + loginMsg.toOxArray())
     }
 
+    //解析登录包后台响应
     @Test
     fun getResponseMsg() {
         val bytes: UByteArray = ubyteArrayOf(
@@ -38,7 +42,7 @@ class GpsSessionManagerTest {
 //        pCheckBit,
 //        pStopBit)
 
-        val result = session.getResponseMsg(1, bytes2)
+        val result = session.analysisMsg(1, bytes2)
         val toDateTime = result.pContent?.toDateTime()
         println(toDateTime?.toUbyteArray()?.forEach {
             println(it)
@@ -46,6 +50,7 @@ class GpsSessionManagerTest {
         println(toDateTime?.toString("yyyy-MM-dd hh:mm:ss"))
     }
 
+    //GPS信息包
     @Test
     fun getGpsInfoPkg() {
         val gpsPkg = GpsPkg(
@@ -61,6 +66,7 @@ class GpsSessionManagerTest {
         gpsInfoPkg.printOxString()
     }
 
+    //LBS信息报
     @Test
     fun getLbsInfoPkg() {
         val lbsPkg = LbsPkg(
@@ -73,6 +79,7 @@ class GpsSessionManagerTest {
         session.getLbsInfoPkg(lbsPkg, 1u).printOxString()
     }
 
+    //GPS和LBS信息合并包
     @Test
     fun getGpsAndLbsPkg() {
         val gpsPkg = GpsPkg(
@@ -90,6 +97,25 @@ class GpsSessionManagerTest {
             cellId = 0x00_FF_FE_FFu
         )
         session.getGpsAndLbsPkg(gpsPkg, lbsPkg, 1u).printOxString()
+    }
+
+    //终端信息心跳包
+    @Test
+    fun getHeartBeatPkg() {
+        val heartBeatPkg = HeartBeatPkg(
+            mTerminalInfo = TerminalInfo(0u, 1u, 1u, 0x001u, 1u, 0u),
+            mVoltageGrade = 6u,
+            mGSMinfoIntensity = 100u,
+            mExt = TerminaExt(0x00u, 0x01u)
+        )
+        session.getHeartBeatPkg(heartBeatPkg, 1u).printOxString()
+    }
+
+    //解析终端信息心跳包
+    @Test
+    fun analysisHeartBeatPkgMsg() {
+        val ubyteArrayOf = ubyteArrayOf(0x78u, 0x78u, 0x05u, 0x13u, 0x00u, 0x11u, 0xF9u, 0x70u, 0x0Du, 0x0Au)
+        session.analysisMsg(1, ubyteArrayOf).getContent().printOxString()
     }
 
 }

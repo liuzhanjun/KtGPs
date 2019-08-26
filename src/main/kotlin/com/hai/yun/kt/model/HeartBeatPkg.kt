@@ -4,7 +4,7 @@ package com.hai.yun.kt.model
 @author liuzhanjun
  **/
 data class HeartBeatPkg(
-    var mTerminalInfo: TerminalInfo? = null,//终端信息
+    var mTerminalInfo: TerminalInfo,//终端信息
     //电压等级 取值0-6  0低电关机 1，电量不足以打电话发短信 2，电量过低 3-6可以正常使用
     var mVoltageGrade: UByte,
     var mGSMinfoIntensity: UByte,//GSM信息-100
@@ -18,16 +18,16 @@ data class HeartBeatPkg(
     //设备休眠状态
     //0x00=正常
     //0x01=休眠
-    var mExt: TerminaExt? = null //920B 才选择这个属性
+    var mExt: TerminaExt //920B 才选择这个属性
 )
 
 data class TerminalInfo(
-    var mDefense: UByte,
-    var mAcc: UByte,
-    var mAnElectric: UByte,
-    var mWarring: UByte,
-    var mGpsPostion: UByte,
-    var mOilElectricity: UByte
+    var mDefense: UInt,//0：撤防，1：设防
+    var mAcc: UInt,//0:ACC低 1：Acc高
+    var mAnElectric: UInt,// 0：未接外电 1：已接外电
+    var mWarring: UInt,// 0：正常 1：震动报警 2：断电报警 3 ：低电报警 4：SOS报警
+    var mGpsPostion: UInt,//0：GPS未定位 1：已定位
+    var mOilElectricity: UInt//0：油电接通 1：油电断开
 )
 
 /**
@@ -44,6 +44,9 @@ data class TerminalInfo(
  * //设备休眠状态
  * //0x00=正常
  * //0x01=休眠
+ * 还有其他机型
+ * 未接电压和语言位
+ *
  */
 data class TerminaExt(
     var mN01: UByte,
