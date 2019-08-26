@@ -1,11 +1,13 @@
 package com.hai.yun.kt
 
 import com.hai.yun.bean.AgreeMentNos
+import com.hai.yun.kt.control.getContent
 import com.hai.yun.kt.control.getDataPkg
 import com.hai.yun.kt.control.getGPSInfoContent
 import com.hai.yun.kt.control.getPkgInfo
 import com.hai.yun.kt.model.DataPkg
 import com.hai.yun.kt.model.GpsPkg
+import com.hai.yun.kt.model.LbsPkg
 import com.hai.yun.kt.utils.*
 import java.lang.IndexOutOfBoundsException
 
@@ -61,6 +63,19 @@ enum class GpsSessionManager {
     fun getGpsInfoPkg(info: GpsPkg, no_: UShort): UByteArray {
         return getPkgInfo(AgreeMentNos.gpsInfo, info.getGPSInfoContent(), no_)
     }
+
+    /**
+     *
+     * 获得lbs信息包
+     * @author liuzhanjun
+     * @date 2019/8/26 11:25
+     * @param [info, no_]
+     * @return
+     */
+    fun getLbsInfoPkg(info: LbsPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.LBSInfo, info.getContent(), no_)
+    }
+
 
 }
 

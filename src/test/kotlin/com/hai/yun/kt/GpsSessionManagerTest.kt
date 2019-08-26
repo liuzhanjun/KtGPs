@@ -2,10 +2,7 @@ package com.hai.yun.kt
 
 
 import com.hai.yun.kt.model.*
-import com.hai.yun.kt.utils.printOxString
-import com.hai.yun.kt.utils.toDateTime
-import com.hai.yun.kt.utils.toOxArray
-import com.hai.yun.kt.utils.toUbyteArray
+import com.hai.yun.kt.utils.*
 import org.joda.time.DateTime
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,19 +47,30 @@ class GpsSessionManagerTest {
     }
 
     @Test
-    fun getGpsInfoPkg(){
+    fun getGpsInfoPkg() {
         val gpsPkg = GpsPkg(
             time = DateTime(2018, 1, 16, 11, 50, 30),
-            len = 12,
-            satelliteNumber = 12,
+            len = 12u,
+            satelliteNumber = 12u,
             point = EarthPoint(Latitude(22, 32.7658), Longitude(22, 32.7658)),
-            speed = 255,
-            gpsStateDir = GpsStateDir(332, 1, 0, 1, 0)
+            speed = 255u,
+            gpsStateDir = GpsStateDir(332u, 1u, 0u, 1u, 0u)
         )
 
         val gpsInfoPkg = session.getGpsInfoPkg(gpsPkg, 1u)
-       gpsInfoPkg.printOxString()
+        gpsInfoPkg.printOxString()
     }
 
+    @Test
+    fun getLbsInfoPkg() {
+        val lbsPkg = LbsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            mcc = 460u,
+            mnc = 0x00u,
+            lac = 0xff_feu,
+            cellId = 0x00_FF_FE_FFu
+        )
+        session.getLbsInfoPkg(lbsPkg, 1u).printOxString()
+    }
 
 }
