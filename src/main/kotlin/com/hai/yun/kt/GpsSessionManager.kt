@@ -108,16 +108,24 @@ enum class GpsSessionManager {
         return getPkgInfo(AgreeMentNos.SSNIRInfo, ssnrp.getContent(), no_)
     }
 
-   /**
-    *
-    * 获得gps和lbs信息包和报警信息合并
-    * @author liuzhanjun
-    * @date 2019/8/26 16:18
-    * @param [gps, lbs, beart, no_]
-    * @return
-    */
+    /**
+     *
+     * 获得gps和lbs信息包和报警信息合并
+     * @author liuzhanjun
+     * @date 2019/8/26 16:18
+     * @param [gps, lbs, beart, no_]
+     * @return
+     */
     fun getAlarmPkg(gps: GpsPkg, lbs: LbsPkg, beart: HeartBeatPkg, no_: UShort): UByteArray {
         return getPkgInfo(AgreeMentNos.WarningInfo, gps.getGPSAndLbsAndAlarm(lbs, beart), no_)
+    }
+
+
+    /**
+     * lbs多基站定位信息包
+     */
+    fun getMultipleLbsPkg(data: MultipleLbsPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.LBSMultipleBaseStations, data.getContent(), no_)
     }
 
 }

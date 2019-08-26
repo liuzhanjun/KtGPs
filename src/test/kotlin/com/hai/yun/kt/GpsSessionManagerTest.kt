@@ -151,7 +151,46 @@ class GpsSessionManagerTest {
             mGSMinfoIntensity = 100u,
             mExt = TerminaExt(0x00u, 0x01u)
         )
-        session.getAlarmPkg(gpsPkg,lbsPkg,heartBeatPkg,1u).printOxString()
+        session.getAlarmPkg(gpsPkg, lbsPkg, heartBeatPkg, 1u).printOxString()
+    }
+
+    @Test
+    fun getMultipleLbsPkg() {
+        val multipleLbsPkg = MultipleLbsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            mcc = 460u,
+            mnc = 0x00u,
+            lac = 0xff_feu,
+            mci = 0xFF_FFu,
+            mciss = 0xFFu,
+            mci_mciss = arrayOf(
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                ),
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                ),
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                ),
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                ),
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                ),
+                Mci_Mciss(
+                    0xFF_FFu,
+                    0xFFu
+                )
+            )
+        )
+        session.getMultipleLbsPkg(multipleLbsPkg, 1u).printOxString()
     }
 
 }
