@@ -1,5 +1,6 @@
 package com.hai.yun.kt.model
 
+import com.hai.yun.kt.utils.oxToUBytes
 import org.joda.time.DateTime
 
 /**
@@ -41,3 +42,5 @@ data class EarthPoint(
     val latitude: Latitude,//纬度
     val longitude: Longitude//经度
 )
+
+

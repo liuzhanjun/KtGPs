@@ -151,3 +151,49 @@ fun UByte.toOx(): String {
     sb.append(b[(n.toInt() and 0xff) % 16])
     return sb.reverse().toString()
 }
+
+/**
+ * 获得电话号码
+ * 电话号码的长度
+ * 长度不够补空格0x20
+ *
+ * @param phone
+ * @return
+ */
+fun String.getPhoneBytes(len: Int): UByteArray {
+    val bytes = UByteArray(len)
+    val phone_unicode = this.string2Unicode()
+    //将unicode转为二进制
+    val binary = phone_unicode.oxToUBytes()
+    var index = 0
+    for (i in binary.indices) {
+        bytes[index++] = binary[i]
+    }
+    for (i in index until len) {
+        bytes[i] = 0x20u
+    }
+    return bytes
+}
+
+/**
+ * 将字符串转换为16进制2位的unicode字符串
+ *
+ * @param string
+ * @return
+ */
+fun String.string2Unicode(): String {
+
+    val unicode = StringBuffer()
+
+    for (i in 0 until this.length) {
+
+        // 取出每一个字符
+        val c = this[i]
+
+        // 转换为unicode
+        unicode.append(Integer.toHexString(c.toInt()))
+
+    }
+
+    return unicode.toString()
+}

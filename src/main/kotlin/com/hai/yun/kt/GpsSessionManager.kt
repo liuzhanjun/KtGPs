@@ -128,6 +128,22 @@ enum class GpsSessionManager {
         return getPkgInfo(AgreeMentNos.LBSMultipleBaseStations, data.getContent(), no_)
     }
 
+    /**
+     *
+     * gps地址查询信息包
+     * @author liuzhanjun
+     * @date 2019/8/26 17:29
+     * @param [data, no_]
+     * @return
+     */
+    fun getGPSQueryAddressPkg(data: GpsPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.queryAddressGPS, data.getGPSInfoContent(), no_)
+    }
+
+    fun analysisGPsQueryAddress(data: UByteArray) {
+
+    }
+
 }
 
 

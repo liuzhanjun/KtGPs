@@ -128,6 +128,7 @@ class GpsSessionManagerTest {
         session.getSsNoiseRatioPkg(ssNoiseRatio, 1u).printOxString()
     }
 
+    //测试报警信息
     @Test
     fun getAlarmPkg() {
         val gpsPkg = GpsPkg(
@@ -193,4 +194,19 @@ class GpsSessionManagerTest {
         session.getMultipleLbsPkg(multipleLbsPkg, 1u).printOxString()
     }
 
+
+
+    @Test
+    fun getGPSquery(){
+        val data = GpsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            len = 12u,
+            satelliteNumber = 12u,
+            point = EarthPoint(Latitude(22, 32.7658), Longitude(22, 32.7658)),
+            speed = 255u,
+            phone_number = "13800138000",
+            gpsStateDir = GpsStateDir(332u, 1u, 0u, 1u, 0u)
+        )
+        session.getGPSQueryAddressPkg(data,1u).printOxString()
+    }
 }

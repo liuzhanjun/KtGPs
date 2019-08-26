@@ -3,6 +3,7 @@ package com.hai.yun.kt.control
 import com.hai.yun.kt.model.GpsPkg
 import com.hai.yun.kt.model.HeartBeatPkg
 import com.hai.yun.kt.model.LbsPkg
+import com.hai.yun.kt.utils.getPhoneBytes
 import com.hai.yun.kt.utils.toOxArray
 import com.hai.yun.kt.utils.toUbyteArray
 import com.hai.yun.kt.utils.toUbytes
@@ -29,6 +30,10 @@ private fun GpsPkg.addGPSList(bytes: MutableList<UByte>) {
     //状态和方向
     val stateAndDire = getStateAndDire()
     bytes.addAll(stateAndDire)
+
+    if (phone_number != null) {
+        bytes.addAll(phone_number!!.getPhoneBytes(21))
+    }
     //扩展位
     if (ext_content != null) {
         bytes.addAll(ext_content!!)
