@@ -73,4 +73,23 @@ class GpsSessionManagerTest {
         session.getLbsInfoPkg(lbsPkg, 1u).printOxString()
     }
 
+    @Test
+    fun getGpsAndLbsPkg() {
+        val gpsPkg = GpsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            len = 12u,
+            satelliteNumber = 12u,
+            point = EarthPoint(Latitude(22, 32.7658), Longitude(22, 32.7658)),
+            speed = 255u,
+            gpsStateDir = GpsStateDir(332u, 1u, 0u, 1u, 0u)
+        )
+        val lbsPkg = LbsPkg(
+            mcc = 460u,
+            mnc = 0x00u,
+            lac = 0xff_feu,
+            cellId = 0x00_FF_FE_FFu
+        )
+        session.getGpsAndLbsPkg(gpsPkg, lbsPkg, 1u).printOxString()
+    }
+
 }

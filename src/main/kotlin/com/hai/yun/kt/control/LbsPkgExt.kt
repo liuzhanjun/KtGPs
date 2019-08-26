@@ -1,14 +1,22 @@
 package com.hai.yun.kt.control
 
+import com.hai.yun.kt.model.GpsPkg
 import com.hai.yun.kt.model.LbsPkg
 import com.hai.yun.kt.utils.toUBytes
 import com.hai.yun.kt.utils.toUbyteArray
 import com.hai.yun.kt.utils.toUbytes
 
-fun LbsPkg.getContent(): UByteArray {
+internal fun LbsPkg.getContent(): UByteArray {
     val bytes = mutableListOf<UByte>()
+    addLbsList(bytes)
+    return bytes.toUByteArray()
+}
+
+internal fun LbsPkg.addLbsList(bytes: MutableList<UByte>) {
     //时间
-    bytes.addAll(time.toUbyteArray())
+    if (time != null) {
+        bytes.addAll(time!!.toUbyteArray())
+    }
     //mcc
     bytes.addAll(mcc.toUbytes(2))
     //mnc
@@ -21,5 +29,5 @@ fun LbsPkg.getContent(): UByteArray {
     if (extContent != null) {
         bytes.addAll(extContent!!)
     }
-    return bytes.toUByteArray()
 }
+

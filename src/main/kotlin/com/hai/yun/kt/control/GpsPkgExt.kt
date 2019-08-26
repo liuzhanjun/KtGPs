@@ -1,13 +1,19 @@
 package com.hai.yun.kt.control
 
 import com.hai.yun.kt.model.GpsPkg
+import com.hai.yun.kt.model.LbsPkg
 import com.hai.yun.kt.utils.toOxArray
 import com.hai.yun.kt.utils.toUbyteArray
 import com.hai.yun.kt.utils.toUbytes
 
-fun GpsPkg.getGPSInfoContent(): UByteArray {
+internal fun GpsPkg.getGPSInfoContent(): UByteArray {
 
     val bytes = mutableListOf<UByte>()
+    addGPSList(bytes)
+    return bytes.toUByteArray()
+}
+
+private fun GpsPkg.addGPSList(bytes: MutableList<UByte>) {
     //时间
     bytes.addAll(time.toUbyteArray())
     //GPS信息长度and卫星数
@@ -26,14 +32,13 @@ fun GpsPkg.getGPSInfoContent(): UByteArray {
     if (ext_content != null) {
         bytes.addAll(ext_content!!)
     }
-    return bytes.toUByteArray()
 }
 
-fun GpsPkg.getGpslenAndNumberUbyte(): UByte {
+internal fun GpsPkg.getGpslenAndNumberUbyte(): UByte {
     return (((len and 0x0Fu) shl 4) or (satelliteNumber and 0x0Fu)).toUByte()
 }
 
-fun GpsPkg.getStateAndDire(): UByteArray {
+internal fun GpsPkg.getStateAndDire(): UByteArray {
     val (run_dir_c,
         latitude_dir,
         longitude_dir,
@@ -48,7 +53,15 @@ fun GpsPkg.getStateAndDire(): UByteArray {
     return (dir_c or la_d or lo_d or gs or gt).toUbytes(2)
 }
 
-fun GpsPkg.getPointUbytes(len_bit: Int): UByteArray {
+/**
+ *
+ * 获得经纬度字节数组
+ * @author liuzhanjun
+ * @date 2019/8/26 12:00
+ * @param [len_bit]
+ * @return
+ */
+internal fun GpsPkg.getPointUbytes(len_bit: Int): UByteArray {
     val (latiude, longitude) = point
     val (la_c, la_m) = latiude
     val (lo_c, lo_m) = longitude
@@ -58,5 +71,20 @@ fun GpsPkg.getPointUbytes(len_bit: Int): UByteArray {
         addAll(latiudeUbytes)
         addAll(longitudeUbytes)
     }.toUByteArray()
+}
+
+/**
+ *
+ * 获得gps和lbs信息包
+ * @author liuzhanjun
+ * @date 2019/8/26 12:00
+ * @param
+ * @return
+ */
+internal fun GpsPkg.getGpsAndLbsContent(lbs: LbsPkg): UByteArray {
+    val bytes = mutableListOf<UByte>()
+    addGPSList(bytes)
+    lbs.addLbsList(bytes)
+    return bytes.toUByteArray()
 }
 

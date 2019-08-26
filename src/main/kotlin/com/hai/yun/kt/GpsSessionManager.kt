@@ -1,6 +1,7 @@
 package com.hai.yun.kt
 
 import com.hai.yun.bean.AgreeMentNos
+import com.hai.yun.kt.control.*
 import com.hai.yun.kt.control.getContent
 import com.hai.yun.kt.control.getDataPkg
 import com.hai.yun.kt.control.getGPSInfoContent
@@ -77,5 +78,20 @@ enum class GpsSessionManager {
     }
 
 
+    /**
+     *  GPS.lbs合并包
+     * 0x12u
+     * @author liuzhanjun
+     * @date 2019/8/26 14:03
+     * @param [gps, lbs, no_]
+     * @return
+     */
+    fun getGpsAndLbsPkg(gps: GpsPkg, lbs: LbsPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.GPSAndLBSInfo, gps.getGpsAndLbsContent(lbs), no_)
+    }
+
+
 }
+
+
 
