@@ -6,10 +6,7 @@ import com.hai.yun.kt.control.getContent
 import com.hai.yun.kt.control.getDataPkg
 import com.hai.yun.kt.control.getGPSInfoContent
 import com.hai.yun.kt.control.getPkgInfo
-import com.hai.yun.kt.model.DataPkg
-import com.hai.yun.kt.model.GpsPkg
-import com.hai.yun.kt.model.HeartBeatPkg
-import com.hai.yun.kt.model.LbsPkg
+import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
 import java.lang.IndexOutOfBoundsException
 
@@ -104,6 +101,12 @@ enum class GpsSessionManager {
     }
 
 
+    /**
+     * 卫星信噪比
+     */
+    fun getSsNoiseRatioPkg(ssnrp: SsNoiseRatio, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.SSNIRInfo, ssnrp.getContent(), no_)
+    }
 
 
 }

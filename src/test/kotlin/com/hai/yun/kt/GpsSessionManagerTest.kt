@@ -118,4 +118,14 @@ class GpsSessionManagerTest {
         session.analysisMsg(1, ubyteArrayOf).getContent().printOxString()
     }
 
+    //测试卫星信噪比
+    @Test
+    fun getSsNoiseRatioPkg() {
+        val ssNoiseRatio = SsNoiseRatio(
+            5u,
+            ubyteArrayOf(0u, 1u, 2u, 3u, 4u, 5u)
+        )
+        session.getSsNoiseRatioPkg(ssNoiseRatio, 1u).printOxString()
+    }
+
 }
