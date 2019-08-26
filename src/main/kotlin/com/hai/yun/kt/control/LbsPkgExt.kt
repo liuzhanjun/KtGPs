@@ -17,6 +17,17 @@ internal fun LbsPkg.addLbsList(bytes: MutableList<UByte>) {
     if (time != null) {
         bytes.addAll(time!!.toUbyteArray())
     }
+    if (lbs_len) {
+        var temp: Int = 0
+        if (time != null) {
+            temp += 6
+        }
+        temp += 9
+        if (extContent != null) {
+            temp += extContent!!.size
+        }
+        bytes.add(temp.toUByte())
+    }
     //mcc
     bytes.addAll(mcc.toUbytes(2))
     //mnc

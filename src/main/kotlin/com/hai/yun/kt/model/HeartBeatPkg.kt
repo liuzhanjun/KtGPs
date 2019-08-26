@@ -47,6 +47,18 @@ data class TerminalInfo(
  * 还有其他机型
  * 未接电压和语言位
  *
+ * 报警信息
+ * 第一字节
+ * 0x00 正常报警
+ * 0x01 SOS报警
+ * 0x02 断电报警
+ * 0x03 震动报警
+ * 0x04 进围栏报警
+ * 0x05 出围栏报警
+ * 第二字节
+ * 0x01中文
+ * 0x02英文
+ *
  */
 data class TerminaExt(
     var mN01: UByte,

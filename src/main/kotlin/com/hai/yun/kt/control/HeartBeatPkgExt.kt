@@ -4,6 +4,11 @@ import com.hai.yun.kt.model.HeartBeatPkg
 
 fun HeartBeatPkg.getContent(): UByteArray {
     val bytes = mutableListOf<UByte>()
+    addList(bytes)
+    return bytes.toUByteArray()
+}
+
+internal fun HeartBeatPkg.addList(bytes: MutableList<UByte>) {
     val (mDefense,
         mAcc,
         mAnElectric,
@@ -20,5 +25,4 @@ fun HeartBeatPkg.getContent(): UByteArray {
     val (first, seconde) = mExt
     bytes.add(first)
     bytes.add(seconde)
-    return bytes.toUByteArray()
 }

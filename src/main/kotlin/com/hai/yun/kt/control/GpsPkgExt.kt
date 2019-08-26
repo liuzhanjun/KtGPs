@@ -1,6 +1,7 @@
 package com.hai.yun.kt.control
 
 import com.hai.yun.kt.model.GpsPkg
+import com.hai.yun.kt.model.HeartBeatPkg
 import com.hai.yun.kt.model.LbsPkg
 import com.hai.yun.kt.utils.toOxArray
 import com.hai.yun.kt.utils.toUbyteArray
@@ -85,6 +86,22 @@ internal fun GpsPkg.getGpsAndLbsContent(lbs: LbsPkg): UByteArray {
     val bytes = mutableListOf<UByte>()
     addGPSList(bytes)
     lbs.addLbsList(bytes)
+    return bytes.toUByteArray()
+}
+
+/**
+ *
+ * 获得gps和lbs信息包和报警信息合并
+ * @author liuzhanjun
+ * @date 2019/8/26 16:16
+ * @param [lbs, alarm]
+ * @return
+ */
+internal fun GpsPkg.getGPSAndLbsAndAlarm(lbs: LbsPkg, alarm: HeartBeatPkg): UByteArray {
+    val bytes = mutableListOf<UByte>()
+    addGPSList(bytes)
+    lbs.addLbsList(bytes)
+    alarm.addList(bytes)
     return bytes.toUByteArray()
 }
 

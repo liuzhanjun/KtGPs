@@ -128,4 +128,30 @@ class GpsSessionManagerTest {
         session.getSsNoiseRatioPkg(ssNoiseRatio, 1u).printOxString()
     }
 
+    @Test
+    fun getAlarmPkg() {
+        val gpsPkg = GpsPkg(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            len = 12u,
+            satelliteNumber = 12u,
+            point = EarthPoint(Latitude(22, 32.7658), Longitude(22, 32.7658)),
+            speed = 255u,
+            gpsStateDir = GpsStateDir(332u, 1u, 0u, 1u, 0u)
+        )
+        val lbsPkg = LbsPkg(
+            lbs_len = true,
+            mcc = 460u,
+            mnc = 0x00u,
+            lac = 0xff_feu,
+            cellId = 0x00_FF_FE_FFu
+        )
+        val heartBeatPkg = HeartBeatPkg(
+            mTerminalInfo = TerminalInfo(0u, 1u, 1u, 0x001u, 1u, 0u),
+            mVoltageGrade = 6u,
+            mGSMinfoIntensity = 100u,
+            mExt = TerminaExt(0x00u, 0x01u)
+        )
+        session.getAlarmPkg(gpsPkg,lbsPkg,heartBeatPkg,1u).printOxString()
+    }
+
 }
