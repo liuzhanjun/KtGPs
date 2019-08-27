@@ -41,9 +41,11 @@ class CRC16 {
             var fcs: UShort = 0xFF_FFu
             for (i in bytes.indices) {
                 //fcs = (fcs >> 8) ^ crctab[(fcs ^ bytes[i]) & 0xff];
-               fcs=((fcs.toUInt() shr 8) xor crctab[((fcs.toUInt() xor bytes[i].toUInt()) and 0xffu).toInt()].toUInt()).toUShort()
+                fcs =
+                    ((fcs.toUInt() shr 8) xor crctab[((fcs.toUInt() xor bytes[i].toUInt()) and 0xffu).toInt()].toUInt()).toUShort()
             }
-            return fcs.toUInt().inv().toUShort()
+            val inv = fcs.toUInt().inv()
+            return (inv and 0xffffu).toUShort()
         }
 
     }

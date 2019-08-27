@@ -140,8 +140,16 @@ enum class GpsSessionManager {
         return getPkgInfo(AgreeMentNos.queryAddressGPS, data.getGPSInfoContent(), no_)
     }
 
-    fun analysisGPsQueryAddress(data: UByteArray) {
-
+    /**
+     *
+     *
+     * @author liuzhanjun
+     * @date 2019/8/27 9:15
+     * @param [data]
+     * @return
+     */
+    fun analysisGPsQueryAddress(data: UByteArray,isEnglish:Boolean ,callback: (AnalysisAddressInfo) -> Unit) {
+        callback(AnalysisAddressInfo().analysis(data,isEnglish))
     }
 
 }

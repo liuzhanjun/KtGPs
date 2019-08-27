@@ -76,6 +76,8 @@ fun UShort.toOxArray(): MutableList<String> {
 
 /**
  * 将16进制字符串转成无符号byte数组
+ * String字符串16进制字符串
+ * 比如32 代表的是 0x32
  */
 fun String.oxToUBytes(): UByteArray {
     val matcher = Pattern.compile("[0-9|a-f|A-F]{1,2}").matcher(this.trim().reversed())
@@ -133,6 +135,46 @@ fun UByteArray.toUShort(): UShort {
     }
 }
 
+fun UByteArray.unicodeToString(): String {
+    var bf = StringBuffer()
+    this.forEach {
+        bf.append(Integer.parseInt(it.toOx(), 16).toChar())
+    }
+    return bf.toString()
+}
+
+fun UShort.printlnOxString() {
+    this.toUBytes().printOxString()
+}
+
+fun UInt.printlnOxString() {
+    this.toUbytes(4).printOxString()
+}
+
+fun UByte.printlnOxString() {
+    println(this.toOx())
+}
+
+fun UByteArray.toUInt(): UInt {
+    if (this.size > 4) {
+        throw IndexOutOfBoundsException()
+    }
+    var result: UInt = 0u
+    for (i in (this.size - 1) downTo 0) {
+        result = (this[i].toUInt() shl ((this.size - i - 1) * 8)) or result
+    }
+    return result
+}
+
+fun UByteArray.equalsElements(bytes: UByteArray): Boolean {
+    var isEquals = true
+    this.forEachIndexed { index, uByte ->
+        if ((uByte xor bytes[index]).toUInt() != 0u) {
+            isEquals = false
+        }
+    }
+    return isEquals
+}
 
 /**
  *
@@ -184,16 +226,18 @@ fun String.getPhoneBytes(len: Int): UByteArray {
 fun String.string2Unicode(): String {
 
     val unicode = StringBuffer()
-
     for (i in 0 until this.length) {
-
         // 取出每一个字符
         val c = this[i]
-
         // 转换为unicode
-        unicode.append(Integer.toHexString(c.toInt()))
-
+        val toHexString = Integer.toHexString(c.toInt())
+        if (toHexString.length==1){
+            unicode.append("0"+toHexString)
+        }else{
+            unicode.append(toHexString)
+        }
     }
 
     return unicode.toString()
 }
+
