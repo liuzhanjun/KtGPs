@@ -39,8 +39,18 @@ internal fun GpsSessionManager.getDataPkg(data: UByteArray, p_len_bit: Int): Dat
     }
 }
 
-internal fun GpsSessionManager.getPkgInfo(agreement: UByte, content: UByteArray, no_: UShort): UByteArray {
+internal fun GpsSessionManager.getPkgInfo(agreement: UByte, content: UByteArray, no_: UShort?): UByteArray {
+    return getPkgInfo(0x78_78u, agreement, content, no_)
+}
+
+internal fun GpsSessionManager.getPkgInfo(
+    start: UShort,
+    agreement: UByte,
+    content: UByteArray,
+    no_: UShort?
+): UByteArray {
     return PkgInfo(1).let {
+        it.pStartBit = start
         it.pAgreement = agreement
         it.pContent = content
         it.pInfoNo = no_

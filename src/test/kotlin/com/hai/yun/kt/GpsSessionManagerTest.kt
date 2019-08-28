@@ -249,4 +249,36 @@ class GpsSessionManagerTest {
 
         }
     }
+
+
+    @Test
+    fun queryAddressLbs() {
+        val lbsPkg = LbsPkg(
+            lbs_len = true,
+            mcc = 460u,
+            mnc = 0x00u,
+            lac = 0xff_feu,
+            phone_number = "18873811258",
+            cellId = 0x00_FF_FE_FFu
+        )
+        session.getLbsQuearyAddressPkg(lbsPkg, 1u).printOxString()
+    }
+
+    @Test
+    fun getMutipleLbsWifiLoationPkg() {
+        val mlwl = MutipleLbsWifiLoation(
+            time = DateTime(2018, 1, 16, 11, 50, 30),
+            mcc = 460u,
+            mnc = 0x00u,
+            lac_ci_rssi = arrayOf(Lac_ci_rssi(5u, ubyteArrayOf(4u, 5u, 7u)))
+            , timeAdvanced = 0x05u,
+            wifiNumber = 0x01u,
+            wifiInfo = arrayOf(WifiInfo(ubyteArrayOf(0u, 1u, 2u, 3u, 4u, 5u, 6u),0x05u))
+        )
+        session.getMutipleLbsWifiLoationPkg(mlwl, 1u).printOxString()
+    }
+    @Test
+    fun getIMSIPkg(){
+        session.getIMSIPkg(ImsiPkg(imsiNumber = "460595485214565")).printOxString()
+    }
 }

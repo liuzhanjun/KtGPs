@@ -148,8 +148,32 @@ enum class GpsSessionManager {
      * @param [data]
      * @return
      */
-    fun analysisGPsQueryAddress(data: UByteArray,isEnglish:Boolean ,callback: (AnalysisAddressInfo) -> Unit) {
-        callback(AnalysisAddressInfo().analysis(data,isEnglish))
+    fun analysisGPsQueryAddress(data: UByteArray, isEnglish: Boolean, callback: (AnalysisAddressInfo) -> Unit) {
+        callback(AnalysisAddressInfo().analysis(data, isEnglish))
+    }
+
+
+    /**0x17u
+     * 查询lbs地址
+     */
+    fun getLbsQuearyAddressPkg(data: LbsPkg, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.queryAddressLBS, data.getContent(), no_)
+    }
+
+    /**
+     * 0x2Cu
+     * lbs多基站wifi定位信息
+     */
+    fun getMutipleLbsWifiLoationPkg(data: MutipleLbsWifiLoation, no_: UShort): UByteArray {
+        return getPkgInfo(AgreeMentNos.LBSWIFIMultipBaseStations, data.getContent(), no_)
+    }
+
+    /**
+     * IMSI
+     *0x90u
+     */
+    fun getIMSIPkg(data: ImsiPkg): UByteArray {
+        return getPkgInfo(AgreeMentNos.IMSISendInfo, data.getContent(), null)
     }
 
 }

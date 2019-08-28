@@ -18,7 +18,7 @@ class PkgInfo(val p_len_bit: Int) {
     var pLength: UByteArray = ubyteArrayOf()//包长度
     var pAgreement: UByte = 0x00u//协议号
     var pContent: UByteArray = ubyteArrayOf()//信息内容
-    var pInfoNo: UShort = 0x00u//信息序列号
+    var pInfoNo: UShort? = null//信息序列号
     var pCheckBit: UShort = 0x00u//校验位
     val pStopBit: UShort = 0x0D_0Au //停止位
 }
@@ -34,7 +34,11 @@ class PkgInfo(val p_len_bit: Int) {
 fun PkgInfo.getPkgInfo(): UByteArray {
 
     //计算包长度字段 协议号长度到校验位长度
-    pLength = (5 + pContent.size).toUInt().toUbytes(p_len_bit)
+    pLength = (3 + pContent.size).toUInt().toUbytes(p_len_bit)
+    if (pInfoNo != null) {
+        pLength += 2u
+    }
+
     //计算校验位
     measureCheckBit()
     return mutableListOf<UByte>().let {
@@ -42,7 +46,9 @@ fun PkgInfo.getPkgInfo(): UByteArray {
         it.addAll(pLength)
         it.add(pAgreement)
         it.addAll(pContent)
-        it.addAll(pInfoNo.toUBytes())
+        if (pInfoNo != null) {
+            it.addAll(pInfoNo!!.toUBytes())
+        }
         it.addAll(pCheckBit.toUBytes())
         it.addAll(pStopBit.toUBytes())
         it.toUByteArray()
@@ -57,7 +63,9 @@ private fun PkgInfo.measureCheckBit() {
         it.addAll(pLength)
         it.add(pAgreement)
         it.addAll(pContent)
-        it.addAll(pInfoNo.toUBytes())
+        if (pInfoNo != null) {
+            it.addAll(pInfoNo!!.toUBytes())
+        }
         CRC16.getCRC16(it.toUByteArray())
     }
     this.pCheckBit = checkBit.toUShort()

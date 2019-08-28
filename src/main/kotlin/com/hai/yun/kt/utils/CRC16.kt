@@ -44,8 +44,7 @@ class CRC16 {
                 fcs =
                     ((fcs.toUInt() shr 8) xor crctab[((fcs.toUInt() xor bytes[i].toUInt()) and 0xffu).toInt()].toUInt()).toUShort()
             }
-            val inv = fcs.toUInt().inv()
-            return (inv and 0xffffu).toUShort()
+            return fcs.toUInt().inv().toUShort()
         }
 
     }
