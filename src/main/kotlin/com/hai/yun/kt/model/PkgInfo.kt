@@ -1,7 +1,6 @@
 package com.hai.yun.kt.model
 
 import com.hai.yun.kt.utils.CRC16
-import com.hai.yun.kt.utils.toOxArray
 import com.hai.yun.kt.utils.toUBytes
 import com.hai.yun.kt.utils.toUbytes
 
@@ -34,10 +33,11 @@ class PkgInfo(val p_len_bit: Int) {
 fun PkgInfo.getPkgInfo(): UByteArray {
 
     //计算包长度字段 协议号长度到校验位长度
-    pLength = (3 + pContent.size).toUInt().toUbytes(p_len_bit)
+    var plen = (3 + pContent.size).toUInt()
     if (pInfoNo != null) {
-        pLength += 2u
+        plen += 2u
     }
+    pLength = plen.toUbytes(p_len_bit)
 
     //计算校验位
     measureCheckBit()
@@ -56,7 +56,6 @@ fun PkgInfo.getPkgInfo(): UByteArray {
 
 
 }
-
 
 private fun PkgInfo.measureCheckBit() {
     val checkBit = mutableListOf<UByte>().let {

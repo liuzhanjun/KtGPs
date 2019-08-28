@@ -176,6 +176,15 @@ enum class GpsSessionManager {
         return getPkgInfo(AgreeMentNos.IMSISendInfo, data.getContent(), null)
     }
 
+
+    /**
+     * 发送ICCID
+     * 0x94u
+     */
+    fun getICCIdPkg(data: IccIdPkg, no_: UShort): UByteArray {
+        return getPkgInfo2(AgreeMentNos.ICCIDSendInfo, data.getContent(), no_)
+    }
+
 }
 
 

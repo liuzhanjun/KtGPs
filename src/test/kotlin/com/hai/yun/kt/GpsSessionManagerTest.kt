@@ -1,16 +1,11 @@
 package com.hai.yun.kt
 
 
-import com.hai.yun.kt.control.checked
-import com.hai.yun.kt.control.getContent
+import com.hai.yun.kt.control.*
 import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
 import org.joda.time.DateTime
 import org.junit.Test
-import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import java.util.*
 
 
 class GpsSessionManagerTest {
@@ -20,8 +15,7 @@ class GpsSessionManagerTest {
     @Test
     fun getLoginMsg() {
         val string: String = "123456789012345"
-        val loginMsg = session.getLoginMsg(string, 1u)
-        println("array" + loginMsg.toOxArray())
+        val loginMsg = session.getLoginMsg(string, 1u).printOxString()
     }
 
     //解析登录包后台响应
@@ -273,12 +267,23 @@ class GpsSessionManagerTest {
             lac_ci_rssi = arrayOf(Lac_ci_rssi(5u, ubyteArrayOf(4u, 5u, 7u)))
             , timeAdvanced = 0x05u,
             wifiNumber = 0x01u,
-            wifiInfo = arrayOf(WifiInfo(ubyteArrayOf(0u, 1u, 2u, 3u, 4u, 5u, 6u),0x05u))
+            wifiInfo = arrayOf(WifiInfo(ubyteArrayOf(0u, 1u, 2u, 3u, 4u, 5u, 6u), 0x05u))
         )
         session.getMutipleLbsWifiLoationPkg(mlwl, 1u).printOxString()
     }
+
     @Test
-    fun getIMSIPkg(){
+    fun getIMSIPkg() {
         session.getIMSIPkg(ImsiPkg(imsiNumber = "460595485214565")).printOxString()
+    }
+
+    @Test
+    fun sendICCID() {
+        val addIccID = IccIdPkg(0x0Au)
+            .addIMEI("0358091088001558")
+            .addIMSI("0460041990205313")
+            .addIccID("898607b9111730120313")
+        session.getICCIdPkg(addIccID, 1u).printOxString()
+
     }
 }
