@@ -8,6 +8,7 @@ import com.hai.yun.kt.control.getGPSInfoContent
 import com.hai.yun.kt.control.getPkgInfo
 import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
+import java.io.File
 import java.lang.IndexOutOfBoundsException
 
 enum class GpsSessionManager {
@@ -183,6 +184,14 @@ enum class GpsSessionManager {
      */
     fun getICCIdPkg(data: IccIdPkg, no_: UShort): UByteArray {
         return getPkgInfo2(AgreeMentNos.ICCIDSendInfo, data.getContent(), no_)
+    }
+
+
+    /**
+     * 录音协议包（0x8D）
+     */
+    fun getRecordPkg(data: RecordPkg,no_: UShort): UByteArray {
+        return getPkgInfo2(AgreeMentNos.recordFileSend, data.getContent(), no_)
     }
 
 }

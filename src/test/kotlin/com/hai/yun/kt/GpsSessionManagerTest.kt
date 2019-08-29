@@ -4,8 +4,13 @@ package com.hai.yun.kt
 import com.hai.yun.kt.control.*
 import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
 import org.joda.time.DateTime
 import org.junit.Test
+import java.io.File
+import kotlin.system.measureTimeMillis
 
 
 class GpsSessionManagerTest {
@@ -286,4 +291,23 @@ class GpsSessionManagerTest {
         session.getICCIdPkg(addIccID, 1u).printOxString()
 
     }
+
+    //测试录音协议包
+    @Test
+    fun getRecordPkg() {
+        var file = File("src/main/resources/files/lufei.jpg")
+        val spliteFile = SpliteRecord(file, 0u)
+        spliteFile.spliteFile(3)
+        spliteFile.records.forEachIndexed { index, v ->
+            println(v)
+
+
+            val recordPkg = session.getRecordPkg(v, index.toUShort())
+            recordPkg.printOxString()
+        }
+
+
+    }
 }
+
+
