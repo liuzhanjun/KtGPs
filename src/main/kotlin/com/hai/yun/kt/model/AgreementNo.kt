@@ -34,4 +34,6 @@ object AgreeMentNos {
     val recordFileSend: UByte = 0x8du
     //服务器向终端发送信息0x80
     val serviceSendToClient: UByte = 0x80u
+    //终端响应服务器发送的指令
+    var clientSendToService: UByte = 0x15u
 }

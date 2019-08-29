@@ -43,6 +43,7 @@ class GpsSessionManagerTest {
 //        pStopBit)
 
         val result = session.analysisMsg(1, bytes2)
+        result.getContent().printOxString()
         val toDateTime = result.pContent?.toDateTime()
         println(toDateTime?.toUbyteArray()?.forEach {
             println(it)
@@ -300,13 +301,17 @@ class GpsSessionManagerTest {
         spliteFile.spliteFile(3)
         spliteFile.records.forEachIndexed { index, v ->
             println(v)
-
-
             val recordPkg = session.getRecordPkg(v, index.toUShort())
             recordPkg.printOxString()
         }
+    }
 
-
+    @Test
+    fun testRecordAnaly() {
+        val ubyteArrayOf = ubyteArrayOf(0x79u, 0x79u, 0x0u, 0x08u, 0x8du, 0x0Fu,0x0Eu,0x0Fu, 0x00u, 0x01u, 0x0du, 0x0cu, 0x0du, 0x0au)
+        val analysisMsg = session.analysisMsg(2, ubyteArrayOf)
+        println(analysisMsg)
+        println(analysisMsg.getContent().printOxString())
     }
 }
 

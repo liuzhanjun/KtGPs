@@ -21,7 +21,7 @@ internal fun GpsSessionManager.getDataPkg(data: UByteArray, p_len_bit: Int): Dat
         val len = p_len?.toUShort()
         if (len != 5.toUShort()) {
             val temp = mutableListOf<UByte>()
-            for (i in (5 + p_len_bit)..(len!!.toInt())) {
+            for (i in (3 + p_len_bit)..((p_len_bit+1)+len!!.toInt()-4)) {
                 temp.add(it[i])
             }
             p_content = temp.toUByteArray()
@@ -32,7 +32,7 @@ internal fun GpsSessionManager.getDataPkg(data: UByteArray, p_len_bit: Int): Dat
             pLength = p_len!!,
             pAgreement = it[2 + p_len_bit],
             pContent = p_content,
-            pInfoNo = ubyteArrayOf(it[3 + p_len_bit], it[4 + p_len_bit]).toUShort(),
+            pInfoNo = ubyteArrayOf(it[data.size-6],it[data.size -5]).toUShort(),
             pCheckBit = ubyteArrayOf(it[data.size - 4], it[data.size - 3]).toUShort(),
             pStopBit = ubyteArrayOf(it[data.size - 2], it[data.size - 1]).toUShort()
         )
