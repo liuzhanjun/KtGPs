@@ -198,4 +198,5 @@ inline class Cmd(private val cmd: String) {
     fun getCenterFail(): UByteArray {
         return "${cmd}=Fail!".toAsciiUbytes()
     }
+
 }

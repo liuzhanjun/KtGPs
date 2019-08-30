@@ -408,7 +408,13 @@ class GpsSessionManagerTest {
             CENTER.getCenterFail().asciiOxToString().println()
 
             TIMER.getSetTimeCmd(1).asciiOxToString().println()
-            VIBRATION.getSettingVIBRATIONCmd(5,1).asciiOxToString().println()
+            TIMER.getSetTimeCmd(1).asciiOxToString().getCmdParams().forEach {
+                println(it)
+            }
+            VIBRATION.getSettingVIBRATIONCmd(5,1).asciiOxToString().getCmdParams().forEach {
+                println("param="+it)
+            }
+
             RESET.getRESETCmd().asciiOxToString().println()
 
 

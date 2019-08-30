@@ -101,6 +101,15 @@ fun String.println() {
     println(this)
 }
 
+fun String.getCmdParams(): MutableList<String> {
+    val params = mutableListOf<String>()
+    val matcher = Pattern.compile("(?<=,)\\S+?(?=[,#])").matcher(this)
+    while (matcher.find()) {
+        params.add(matcher.group())
+    }
+    return params
+}
+
 /**
  *
  * 将无符号数组转成16进制字符数组
