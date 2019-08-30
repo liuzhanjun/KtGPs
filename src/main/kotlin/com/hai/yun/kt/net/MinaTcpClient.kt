@@ -22,7 +22,7 @@ enum class MinaTcpClient {
     val HOST = "localhost"
     private val conn = NioSocketConnector()
     private val adapter = TcpIoAdapter()
-    fun conn(){
+    fun conn() {
         conn.handler = adapter
         conn.filterChain.addLast("message_f", ProtocolCodecFilter(MessageCoderFactory()))
         val connectFuture = conn.connect(InetSocketAddress(HOST, PORT))
@@ -30,8 +30,8 @@ enum class MinaTcpClient {
         mSession = connectFuture.getSession()
     }
 
-    fun sendMessage(msg: ByteArray) {
-        mSession!!.write(IoBuffer.wrap(msg))
+    fun sendMessage(msg: UByteArray) {
+        mSession!!.write(IoBuffer.wrap(msg.toByteArray()))
     }
 
     fun closConn() {
