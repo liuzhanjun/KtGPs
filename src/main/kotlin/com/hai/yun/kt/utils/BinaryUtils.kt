@@ -93,6 +93,14 @@ fun String.oxToUBytes(): UByteArray {
     return ubyteArrayOf
 }
 
+fun String.toAsciiUbytes(): UByteArray {
+    return this.stringToAscii_ox().oxToUBytes()
+}
+
+fun String.println() {
+    println(this)
+}
+
 /**
  *
  * 将无符号数组转成16进制字符数组
@@ -109,12 +117,14 @@ fun UByteArray.toOxArray(): MutableList<String> {
     return result.toMutableList()
 }
 
+
 fun UByteArray.printOxString() {
-    toOxArray().forEach {
-        print("$it|")
+    val joinToString = toOxArray().joinToString(",", "", " ", -1, "") {
+        "0x${it}u"
     }
-    println()
+    println(joinToString)
 }
+
 
 /**
  *
@@ -135,12 +145,19 @@ fun UByteArray.toUShort(): UShort {
     }
 }
 
+/**
+ * unicode转字符串
+ */
 fun UByteArray.unicodeToString(): String {
     var bf = StringBuffer()
     this.forEach {
         bf.append(Integer.parseInt(it.toOx(), 16).toChar())
     }
     return bf.toString()
+}
+
+fun UByteArray.asciiOxToString(): String {
+    return unicodeToString()
 }
 
 fun UShort.printlnOxString() {
@@ -231,11 +248,33 @@ fun String.string2Unicode(): String {
         val c = this[i]
         // 转换为unicode
         val toHexString = Integer.toHexString(c.toInt())
-        if (toHexString.length==1){
-            unicode.append("0"+toHexString)
-        }else{
+        if (toHexString.length == 1) {
+            unicode.append("0" + toHexString)
+        } else {
             unicode.append(toHexString)
         }
+    }
+
+    return unicode.toString()
+}
+
+
+/**
+ * @param string
+ * @return
+ */
+fun String.stringToAscii_ox(): String {
+
+    val unicode = StringBuffer()
+
+    for (i in 0 until this.length) {
+
+        // 取出每一个字符
+        val c = this[i]
+
+        // 转换为unicode
+        unicode.append((Integer.valueOf(c.toInt()).toUByte().toOx()))
+
     }
 
     return unicode.toString()

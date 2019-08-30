@@ -270,10 +270,10 @@ class GpsSessionManagerTest {
             time = DateTime(2018, 1, 16, 11, 50, 30),
             mcc = 460u,
             mnc = 0x00u,
-            lac_ci_rssi = arrayOf(Lac_ci_rssi(5u, ubyteArrayOf(4u, 5u, 7u)))
+            lac_ci_rssi = arrayOf(Lac_ci_rssi(0x5u, ubyteArrayOf(0x4u, 0x5u, 0x7u)))
             , timeAdvanced = 0x05u,
             wifiNumber = 0x01u,
-            wifiInfo = arrayOf(WifiInfo(ubyteArrayOf(0u, 1u, 2u, 3u, 4u, 5u, 6u), 0x05u))
+            wifiInfo = arrayOf(WifiInfo(ubyteArrayOf(0x0u, 0x1u, 0x2u, 0x3u, 0x4u, 0x5u, 0x6u), 0x05u))
         )
         session.getMutipleLbsWifiLoationPkg(mlwl, 1u).printOxString()
     }
@@ -308,11 +308,114 @@ class GpsSessionManagerTest {
 
     @Test
     fun testRecordAnaly() {
-        val ubyteArrayOf = ubyteArrayOf(0x79u, 0x79u, 0x0u, 0x08u, 0x8du, 0x0Fu,0x0Eu,0x0Fu, 0x00u, 0x01u, 0x0du, 0x0cu, 0x0du, 0x0au)
+        val ubyteArrayOf = ubyteArrayOf(
+            0x79u,
+            0x79u,
+            0x0u,
+            0x08u,
+            0x8du,
+            0x0Fu,
+            0x0Eu,
+            0x0Fu,
+            0x00u,
+            0x01u,
+            0x0du,
+            0x0cu,
+            0x0du,
+            0x0au
+        )
         val analysisMsg = session.analysisMsg(2, ubyteArrayOf)
         println(analysisMsg)
         println(analysisMsg.getContent().printOxString())
     }
+
+    @Test
+    fun testAscii() {
+//        val ascii_ox = "DYD,000000#".stringToAscii_ox()
+        val ascii_ox = "DYD=Success!".string2Unicode()
+        println("ox=" + ascii_ox)
+        var oxToUBytes = ascii_ox.oxToUBytes()
+        println(oxToUBytes)
+        oxToUBytes.printOxString()
+        println(oxToUBytes.asciiOxToString())
+    }
+
+    //测试解析指令和响应指令
+    @Test
+    fun analysisCommand() {
+        val data = ubyteArrayOf(
+            0x78u, 0x78u, 0x15u,
+            0x80u,
+            0x0Bu,
+            0x00u, 0x01u, 0xA9u, 0x58u,
+            0x44u, 0x59u, 0x44u, 0x2Cu, 0x30u, 0x30u, 0x30u, 0x30u, 0x30u, 0x30u, 0x23u,
+            0x00u, 0xA0u, 0xDCu, 0xF1u, 0x0Du, 0x0Au
+        )
+        val dwxxSuccess = Command.DWXX.cmd.getDWXXSuccess(
+            0, 23, 5.17079,
+            0, 114, 23.62119,
+            120, 53.023f, DateTime(2008, 9, 12, 14, 52, 36)
+        )
+        val analysisCommand = session.analysisCommand(data)
+        println(analysisCommand!!.cmContent)
+
+
+        val cmdStr="DYD=Success!"
+        val oxToUBytes = cmdStr.stringToAscii_ox().oxToUBytes()
+        val commandPkg = session.getCommandPkg(analysisCommand!!, oxToUBytes, 1u)
+        commandPkg.printOxString()
+    }
+
+
+    @Test
+    fun CommandTest(){
+            val DYD=Command.DYD.cmd
+            val HFYD=Command.HFYD.cmd
+            val DWXX=Command.DWXX.cmd
+            val CENTER=Command.CENTER.cmd
+            val TIMER=Command.TIMER.cmd
+            val VIBRATION=Command.VIBRATION.cmd
+            val RESET=Command.RESET.cmd
+            val FACTORY=Command.FACTORY.cmd
+            val SOUND=Command.SOUND.cmd
+            val LISTEN=Command.LISTEN.cmd
+            val SLEEP=Command.SLEEP.cmd
+            val POWER=Command.POWER.cmd
+            val POFF=Command.POFF.cmd
+            val STATUS=Command.STATUS.cmd
+            val PARAM=Command.PARAM.cmd
+
+
+            DYD.getDYDCmd().asciiOxToString().println()
+            DYD.getSuccess().asciiOxToString().println()
+            DYD.getDYDFail().asciiOxToString().println()
+
+            HFYD.getHFYDCmd().asciiOxToString().println()
+            HFYD.getSuccess().asciiOxToString().println()
+            HFYD.getFail().asciiOxToString().println()
+
+            DWXX.getDWXXCmd().asciiOxToString().println()
+            DWXX.getDWXXSuccess(
+                0, 23, 5.17079,
+                0, 114, 23.62119,
+                120, 53.023f, DateTime(2008, 9, 12, 14, 52, 36)
+            ).asciiOxToString().println()
+            DWXX.getDWXXFail().asciiOxToString().println()
+            DWXX.getDWXXLoactionFail().asciiOxToString().println()
+            CENTER.getAddCenterCmd("19954842452").asciiOxToString().println()
+            CENTER.getDeleteCenterCmd().asciiOxToString().println()
+            CENTER.getCenterSuccess().asciiOxToString().println()
+            CENTER.getCenterFail().asciiOxToString().println()
+
+            TIMER.getSetTimeCmd(1).asciiOxToString().println()
+            VIBRATION.getSettingVIBRATIONCmd(5,1).asciiOxToString().println()
+            RESET.getRESETCmd().asciiOxToString().println()
+
+
+
+    }
+
+
 }
 
 

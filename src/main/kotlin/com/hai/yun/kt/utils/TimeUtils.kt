@@ -25,7 +25,9 @@ fun DataPkg.toDateTime(): DateTime {
     return this.pContent!!.toDateTime()
 }
 
-//把时间转成无符号字节数组
+//年份只取最后两位
+//2016 取16   2155 取55
+// 把时间转成无符号字节数组
 fun DateTime.toUbyteArray(): UByteArray {
     val currentYear = DateTime(Date()).year().get()
     val year = this.year().get() - (currentYear - (currentYear % 100))

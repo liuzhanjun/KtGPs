@@ -8,6 +8,7 @@ import com.hai.yun.kt.control.getGPSInfoContent
 import com.hai.yun.kt.control.getPkgInfo
 import com.hai.yun.kt.model.*
 import com.hai.yun.kt.utils.*
+import org.omg.CORBA.CODESET_INCOMPATIBLE
 import java.io.File
 import java.lang.IndexOutOfBoundsException
 
@@ -20,6 +21,7 @@ enum class GpsSessionManager {
 
     abstract fun getInstence(): GpsSessionManager
 
+    private constructor()
 
     /**
      *
@@ -190,10 +192,42 @@ enum class GpsSessionManager {
     /**
      * 录音协议包（0x8D）
      */
-    fun getRecordPkg(data: RecordPkg,no_: UShort): UByteArray {
+    fun getRecordPkg(data: RecordPkg, no_: UShort): UByteArray {
         return getPkgInfo2(AgreeMentNos.recordFileSend, data.getContent(), no_)
     }
 
+
+    /**
+     * 解析指令
+     */
+    fun analysisCommand(data: UByteArray): CommandPkg? {
+        val analysisMsg = analysisMsg(1, data)
+        val pContent = analysisMsg.pContent
+        if (pContent != null) {
+            val serviceFlag = ubyteArrayOf(pContent[1], pContent[2], pContent[3], pContent[4]).toUInt()
+            val content = mutableListOf<UByte>()
+            for (index in 5..(4 + pContent[0].toInt())) {
+                content.add(pContent[index])
+            }
+            val ext = mutableListOf<UByte>()
+            if ((4 + pContent[0].toInt()) < pContent.size - 1) {
+                for (index in (5 + pContent[0].toInt())..pContent.size - 1) {
+                    ext.add(pContent[index])
+                }
+            }
+            return CommandPkg(pContent[0], serviceFlag, content.toUByteArray(), ext.toUByteArray())
+        }
+        return null
+    }
+
+    /**
+     * 0x15
+     * 获得指令包
+     */
+    fun getCommandPkg(cmmPkg: CommandPkg, cmd: UByteArray, no_: UShort): UByteArray {
+        cmmPkg.cmContent = cmd
+        return getPkgInfo(AgreeMentNos.clientSendToService, cmmPkg.getContent(), no_)
+    }
 }
 
 
